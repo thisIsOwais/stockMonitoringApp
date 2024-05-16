@@ -45,6 +45,8 @@ Contributions are welcome! Please fork the repository and create a pull request 
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
+Live Here:https://stock-monitoring-app-topaz.vercel.app/
+
 ## Acknowledgements
 
 - [Alpha Vantage](https://www.alphavantage.co/) for providing stock data APIs.
