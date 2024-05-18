@@ -9,6 +9,7 @@ const SearchBar = () => {
 
     let x=process.env.REACT_APP_SERVER_URL;
     let y=process.env.REACT_APP_ALPHA_API || "demo";
+    y="demo";
     const handleSearchChange = async (event) => {
         // console.log(event.target)
         const  value= event.target.value;

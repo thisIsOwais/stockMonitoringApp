@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, Grid, Button ,Drawer, List, ListItem, ListItemText} from '@mui/material';
 import SearchBar from '../components/Search';
@@ -6,15 +7,14 @@ import { auth } from '../context/firebase';
 
 const Dashboard = () => {
   let x=process.env.REACT_APP_SERVER_URL;
-  let y=process.env.REACT_APP_ALPHA_API || "demo";
+  let y="demo"
   const [watchlist, setWatchlist] = useState([]);
   const [stockData, setStockData] = useState({});
 
-  
   useEffect(() => {
-    console.log(watchlist)
+    watchlist.push("IBM", "300135.SHZ")
     // Fetch watchlist
-    watchlist.push("IBM");
+    console.log(`${x}/api/watchlist?email=${auth.currentUser.email}`)
     fetch(x+`/api/watchlist?email=`+auth.currentUser.email, {
       method: 'GET',
       headers: {
@@ -24,26 +24,24 @@ const Dashboard = () => {
       .then(response => response.json())
       .then(data => {
         console.log("data ",data);
-        // setWatchlist(data.watchlist.stocks);
-        setWatchlist(prev => [...prev, ...data.watchlist.stocks]);
+        setWatchlist(prev=>[...prev,...data.watchlist.stocks]);
       })},[])
-  
+
 
       useEffect(() => {
         // Fetch stock data for each symbol in the watchlist
         const fetchData = async () => {
           try {
             const promises = watchlist.map((symbol) => {
-              console.log(symbol)
               if (symbol === "IBM" || symbol === "300135.SHZ") {
                 return fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${y}`);
               }
               return null;
             });
-  
+
             const responses = await Promise.all(promises);
             const newData = {};
-  
+
             responses.forEach(response => {
               if (response !== null) {
                 response.json().then(data => {
@@ -63,11 +61,11 @@ const Dashboard = () => {
             console.error('Error fetching stock data:', error);
           }
         };
-  
+
         fetchData();
       }, [watchlist]);
 
-  
+
 
   // Remove stock from watchlist
   const removeStockFromWatchlist = (id, symbol) => {
@@ -84,7 +82,7 @@ const Dashboard = () => {
 
     const [selectedStockData, setSelectedStockData] = useState(null); // State to hold selected stock data
     const [isDetailOpen, setIsDetailOpen] = useState(false); // State to manage drawer open/close
-  
+
     // Function to handle click on "Detail" button
     const handleDetailClick = async (symbol) => {
       try {
@@ -96,15 +94,15 @@ const Dashboard = () => {
         console.error('Error fetching detailed data:', error);
       }
     };
-  
+
     // Function to close the drawer
     const handleCloseDetail = () => {
       setIsDetailOpen(false); // Close the drawer
     };
-  
+
 
   return (
- 
+
 <>
   <br></br>
   <SearchBar />
@@ -148,4 +146,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
