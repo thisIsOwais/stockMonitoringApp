@@ -19,12 +19,14 @@ const SearchBar = () => {
                 // Fetch stock symbols using the provided API
                 const response = await fetch(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${value}&apikey=${y}`);
                 const data = await response.json();
+               
+                    window.alert("error:"+data.Information)
+                
                 console.log(data)
                 setSearchResults(data.bestMatches || []);
                 console.log("results",searchResults)
             } catch (error) {
                 console.error('Error searching stocks:', error);
-                window.alert("error: "+error);
             }
         } else {
             setSearchResults([]);
@@ -46,7 +48,7 @@ const SearchBar = () => {
             if (response.ok) {
                 // Stock added to watchlist successfully
                 console.log('Stock added to watchlist successfully.');
-                Window.alert("stock added successfully")
+                window.alert("stock added successfully")
             } else {
                 // Error adding stock to watchlist
                 console.error('Error adding stock to watchlist:', response.statusText);

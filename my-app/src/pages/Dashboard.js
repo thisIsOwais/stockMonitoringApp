@@ -10,9 +10,11 @@ const Dashboard = () => {
   const [watchlist, setWatchlist] = useState([]);
   const [stockData, setStockData] = useState({});
 
+  
   useEffect(() => {
+    console.log(watchlist)
     // Fetch watchlist
-    console.log(`${x}/api/watchlist?email=${auth.currentUser.email}`)
+    watchlist.push("IBM");
     fetch(x+`/api/watchlist?email=`+auth.currentUser.email, {
       method: 'GET',
       headers: {
@@ -22,7 +24,8 @@ const Dashboard = () => {
       .then(response => response.json())
       .then(data => {
         console.log("data ",data);
-        setWatchlist(data.watchlist.stocks);
+        // setWatchlist(data.watchlist.stocks);
+        setWatchlist(prev => [...prev, ...data.watchlist.stocks]);
       })},[])
   
 
@@ -31,6 +34,7 @@ const Dashboard = () => {
         const fetchData = async () => {
           try {
             const promises = watchlist.map((symbol) => {
+              console.log(symbol)
               if (symbol === "IBM" || symbol === "300135.SHZ") {
                 return fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${y}`);
               }

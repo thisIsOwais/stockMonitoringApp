@@ -66,13 +66,18 @@ const getWatchlistByEmail = async (req, res) => {
         const { email } = req.query;
 
         // Find the watchlist corresponding to the email
-        const watchlist = await Watchlist.findOne({ email });
+        let watchlist = await Watchlist.findOne({ email });
 
-        // If watchlist doesn't exist, return a 404 error response
-        if (!watchlist) {
-            return res.status(404).json({ success: false, message: 'Watchlist not found for the provided email.' });
+           // If the watchlist doesn't exist, create a new one
+           if (!watchlist) {
+            watchlist = new Watchlist({ email });
         }
 
+        await watchlist.save();
+
+        console.log(watchlist)
+
+      
         // Return the watchlist
         res.status(200).json({ success: true, watchlist });
     } catch (error) {
