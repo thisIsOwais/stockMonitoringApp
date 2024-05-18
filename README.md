@@ -44,8 +44,8 @@ Before running the application, make sure to set up the following environment va
 Contributions are welcome! Please fork the repository and create a pull request with your changes.
 
 
-## steps to deploy react app on github
-# Deploying Your React App on Vercel
+# steps to deploy 
+## Deploying Your Backend on Render
 
 ## Prerequisites
 - **Vercel Account**: Sign up at [vercel.com](https://vercel.com) if you don't have an account.
