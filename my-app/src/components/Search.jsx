@@ -8,6 +8,7 @@ const SearchBar = () => {
     const email=auth.currentUser.email;
 
     let x=process.env.REACT_APP_SERVER_URL;
+    let y=process.env.REACT_APP_ALPHA_API || "demo";
     const handleSearchChange = async (event) => {
         // console.log(event.target)
         const  value= event.target.value;
@@ -16,13 +17,14 @@ const SearchBar = () => {
         if (value) {
             try {
                 // Fetch stock symbols using the provided API
-                const response = await fetch(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${value}&apikey=demo`);
+                const response = await fetch(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${value}&apikey=${y}`);
                 const data = await response.json();
                 console.log(data)
                 setSearchResults(data.bestMatches || []);
                 console.log("results",searchResults)
             } catch (error) {
                 console.error('Error searching stocks:', error);
+                window.alert("error: "+error);
             }
         } else {
             setSearchResults([]);
@@ -31,6 +33,7 @@ const SearchBar = () => {
 
     const addToWatchList = async (symbol) => {
         try {
+            console.log("add to watchlist clicked")
             // Replace 'YOUR_BACKEND_API_URL' with your actual backend API endpoint for adding to watchlist
             const response = await fetch(`${x}/api/addToWatchlist`, {
                 method: 'POST',

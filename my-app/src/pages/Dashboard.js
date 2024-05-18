@@ -6,13 +6,14 @@ import { auth } from '../context/firebase';
 
 const Dashboard = () => {
   let x=process.env.REACT_APP_SERVER_URL;
+  let y=process.env.REACT_APP_ALPHA_API || "demo";
   const [watchlist, setWatchlist] = useState([]);
   const [stockData, setStockData] = useState({});
 
   useEffect(() => {
     // Fetch watchlist
     console.log(`${x}/api/watchlist?email=${auth.currentUser.email}`)
-    fetch(x+`api/watchlist?email=`+auth.currentUser.email, {
+    fetch(x+`/api/watchlist?email=`+auth.currentUser.email, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -31,7 +32,7 @@ const Dashboard = () => {
           try {
             const promises = watchlist.map((symbol) => {
               if (symbol === "IBM" || symbol === "300135.SHZ") {
-                return fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=demo`);
+                return fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${y}`);
               }
               return null;
             });
@@ -83,7 +84,7 @@ const Dashboard = () => {
     // Function to handle click on "Detail" button
     const handleDetailClick = async (symbol) => {
       try {
-        const response = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=5min&apikey=demo`);
+        const response = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=5min&apikey=${y}`);
         const data = await response.json();
         setSelectedStockData(data); // Set selected stock data
         setIsDetailOpen(true); // Open the drawer
